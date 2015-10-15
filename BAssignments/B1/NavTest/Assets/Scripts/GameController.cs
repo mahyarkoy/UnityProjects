@@ -4,6 +4,8 @@ using System;
 
 public class GameController : MonoBehaviour {
 
+	const float AGENTDEFAULTSPEED = 3.5f;
+
 	public Texture2D selectionTexture = null;
 
 	private RaycastHit myHit = new RaycastHit();
@@ -42,15 +44,10 @@ public class GameController : MonoBehaviour {
 		if (Input.GetMouseButtonDown (0)) {
 			selectStartPosX = Input.mousePosition.x;
 			selectStartPosY = Input.mousePosition.y;
-			Debug.Log("startx " + selectStartPosX);
-			Debug.Log("starty " + selectStartPosY);
 		} 
 		else if (Input.GetMouseButtonUp (0)) {
 			selectEndPosX = Input.mousePosition.x;
 			selectEndPosY = Input.mousePosition.y;
-			Debug.Log(Input.mousePosition);
-			Debug.Log("endx " + selectEndPosX);
-			Debug.Log("endy " + selectEndPosY);
 
 			//make all start coordinates less than end coordinates
 			if(selectEndPosX < selectStartPosX) {
@@ -75,7 +72,6 @@ public class GameController : MonoBehaviour {
 					Vector3 testRay = new Vector3(i,j,0);
 					myRay = Camera.main.ScreenPointToRay (testRay);
 					if (Physics.Raycast (myRay, out myHit, 100.0f)){ //hit
-						Debug.Log("Hit!");
 						if(!myHit.collider.transform.CompareTag("none")) {
 							continue;
 						}
@@ -101,11 +97,17 @@ public class GameController : MonoBehaviour {
 			myRay = Camera.main.ScreenPointToRay (Input.mousePosition);
 			if (Physics.Raycast (myRay, out myHit, 100.0f)){ //hit
 				if(myHit.collider.transform.CompareTag("level")) {
-					Debug.Log("valid move");
 					for(int i=0; i<selected.Length; i++) {
 						NavMeshAgent agent = selected[i].GetComponent<NavMeshAgent>();
-						if(agent != null)
-							agent.destination = myHit.point;
+						if(agent != null) {
+							if(Vector3.Distance(agent.destination, myHit.point) < 1) { //Dont change destination, double the speed
+								agent.speed = AGENTDEFAULTSPEED * 2;
+							}
+							else {
+								agent.speed = AGENTDEFAULTSPEED;
+								agent.destination = myHit.point;
+							}
+						}
 					}
 				}
 			}
