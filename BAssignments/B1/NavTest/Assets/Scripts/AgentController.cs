@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public class AgentController : MonoBehaviour {
 
+	public Color unselectedColor;
+	public Color selectedColor;
+	public Vector3 currDest;
+	public bool routing;
 	public float devilDistance;
 
 	private Renderer rend;
@@ -13,15 +17,27 @@ public class AgentController : MonoBehaviour {
 	void Start () {
 		rend = GetComponent<Renderer> ();
 		nav = GetComponent<NavMeshAgent> ();
+		currDest = transform.position;
+		routing = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
 		if(this.CompareTag("select"))
-			rend.material.color = Color.green;
+			rend.material.color = selectedColor;
 		else
-			rend.material.color = Color.red;
+			rend.material.color = unselectedColor;
+		if (Vector3.Distance (currDest, transform.position) <= 2f) {
+			Debug.Log ("at dest");
+			routing = false;
+			nav.ResetPath();
+		}
 		detectDevil ();
+		if (nav.velocity == Vector3.zero && routing == true) {
+			Debug.Log ("reroute");
+			nav.SetDestination(currDest);
+		}
 	}
 
 	void detectDevil() {

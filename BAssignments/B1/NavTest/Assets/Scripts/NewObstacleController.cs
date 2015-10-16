@@ -2,9 +2,11 @@
 using System.Collections;
 
 public class NewObstacleController : MonoBehaviour {
-	
-	Rigidbody rb;
-	Renderer rend;
+
+	public Color selectedColor, unselectedColor;
+
+	private Rigidbody rb;
+	private Renderer rend;
 	
 	// Use this for initialization
 	void Start () {
@@ -15,7 +17,7 @@ public class NewObstacleController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(this.CompareTag("select")) {
-			rend.material.color = Color.yellow;
+			rend.material.color = selectedColor;
 			Vector3 move = new Vector3(0,0,0);
 			if(Input.GetButton("left")) {
 				move.x = move.x - .1f;
@@ -32,6 +34,6 @@ public class NewObstacleController : MonoBehaviour {
 			rb.position = rb.position + move;
 		}
 		else
-			rend.material.color = Color.blue;
+			rend.material.color = unselectedColor;
 	}
 }

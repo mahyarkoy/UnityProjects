@@ -105,6 +105,8 @@ public class GameController : MonoBehaviour {
 							}
 							else {
 								agent.speed = AGENTDEFAULTSPEED;
+								selected[i].GetComponent<AgentController>().currDest = myHit.point;
+								selected[i].GetComponent<AgentController>().routing = true;
 								agent.destination = myHit.point;
 							}
 						}
