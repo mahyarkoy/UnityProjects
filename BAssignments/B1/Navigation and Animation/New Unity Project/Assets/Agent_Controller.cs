@@ -18,7 +18,7 @@ public class Agent_Controller : MonoBehaviour {
 	void agent_path(Vector3 target_position )
 	{
 		nav_agent.destination=target_position;
-		print (" I'm called");
+		//print (" I'm called");
 	}
 	
 }

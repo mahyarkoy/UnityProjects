@@ -10,12 +10,20 @@ public class Mouse_Click_Agent : MonoBehaviour {
 	public bool target_setting_possible;
 	public bool agent1_selected;
 	public bool agent2_selected;
+	public bool avatar_selected;
 	//public bool agent2_selected;
 
 	//public bool agent2_selected;
 	public bool obstacle1_selected;
 	public bool obstacle2_selected;
-	
+
+
+	public bool activate_multiple_click;
+	public bool animation_process_flag;
+
+	private int mulitple_click_count;
+	private float mulitple_click_start_time;
+	private float mulitple_click_previous_time;
 	
 	// Use this for initialization
 	void Start () {
@@ -23,6 +31,10 @@ public class Mouse_Click_Agent : MonoBehaviour {
 		target_setting_possible = false;
 		obstacle1_selected=false;
 		obstacle2_selected=false;
+		mulitple_click_count = 0;
+		activate_multiple_click = false;
+		//mulitple_click_time = 0; 
+		animation_process_flag = false;
 		//agent2_selected = false;
 		//obstacle_selected = false;
 	}
@@ -65,7 +77,45 @@ public class Mouse_Click_Agent : MonoBehaviour {
 							obstacle2_selected=true;
 							obstacle1_selected=false;
 						}
-						else{	
+						else{
+
+								if (hit.transform.gameObject.tag=="Susan")
+								{
+
+
+									if(!activate_multiple_click) //begining of multiple click.
+									{
+										activate_multiple_click = true;
+										//avatar_selected=true;
+										mulitple_click_count=mulitple_click_count +1;
+									
+										mulitple_click_previous_time=Time.realtimeSinceStartup;
+									}
+
+									else  //re-enter of multiple click
+									{
+										if((Time.realtimeSinceStartup-mulitple_click_previous_time)<1.5)// accept as multiple click.
+										{
+											mulitple_click_previous_time=Time.realtimeSinceStartup; //current time update.
+											mulitple_click_count= mulitple_click_count+1;
+										  //update time.
+										}
+										else //do not accept as multiple time.
+										{
+										//	activate_multiple_click=false;
+										//	mulitple_click_count=0;
+										//	avatar_selected=false;
+									   //elapsed time. process it.
+											animation_process_flag=true; //other 
+
+										}
+									}
+
+
+								
+
+								}
+								else{
 						//print (" 3?");
 						if(agent1_selected||agent2_selected)// || other selected)
 						{
@@ -77,6 +127,7 @@ public class Mouse_Click_Agent : MonoBehaviour {
 
 						
 						}
+							}
 					}
 
 				}

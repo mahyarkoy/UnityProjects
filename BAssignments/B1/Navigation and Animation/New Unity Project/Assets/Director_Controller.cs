@@ -7,11 +7,7 @@ public class Director_Controller : MonoBehaviour {
 	public  Mouse_Click_Agent  mouse_clik_tracking;
 	public  GameObject agent1;
 	public  GameObject agent2;
-	//public  GameObject door1;
-	//public  GameObject door2;
-	//public  bool agent1_processed;
-	//public  GameObject agent2;
-	//public mouse2 player2;
+
 	
 	// Use this for initialization
 	void Start () {
@@ -40,6 +36,12 @@ public class Director_Controller : MonoBehaviour {
 			mouse_clik_tracking.target_setting_possible=false;
 			//mouse_clik_tracking.agent1_selected=false; //here can be changed?
 			
+		}
+
+		if (mouse_clik_tracking.animation_process_flag) {
+			//speed = mouse_clik_tracking.mulitple_click_count;
+			mouse_clik_tracking.animation_process_flag=false;
+			mouse_clik_tracking.activate_multiple_click=false;
 		}
 
 			
