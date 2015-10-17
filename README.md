@@ -6,9 +6,12 @@
 <img src="leaves.png" width="300" height="314" alt="leaves logo"/>
 
 ###B1: Navigation and Animation
-1. I am a fun project!
-2. Features
-3. Description
+
+This project shows off the navigation and animation features in Unity
+and how they can be integrated together, with these three parts:
+1. navigation using the Unity navmesh agent
+2. animation using the Unity mecanim system
+3. a combination of navigation and animation
 
 <!--
 ###B2: Inverse Kinematics
