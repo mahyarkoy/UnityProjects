@@ -9,6 +9,7 @@ public class Mouse_Click_Agent : MonoBehaviour {
 
 	public bool target_setting_possible;
 	public bool agent1_selected;
+	public bool agent2_selected;
 	//public bool agent2_selected;
 
 	//public bool agent2_selected;
@@ -40,6 +41,15 @@ public class Mouse_Click_Agent : MonoBehaviour {
 					//target_position = hit.point; 
 				}
 
+			else 
+				{
+					if (hit.transform.gameObject.tag == "agent2")
+					{
+						//	print ("1");     
+						agent2_selected = true;
+						//target_position = hit.point; 
+					}
+
 			    
 				else
 				{
@@ -57,16 +67,19 @@ public class Mouse_Click_Agent : MonoBehaviour {
 						}
 						else{	
 						//print (" 3?");
-						if(agent1_selected)// || other selected)
+						if(agent1_selected||agent2_selected)// || other selected)
 						{
 							target_position = hit.point;
 							target_setting_possible=true; //other selected then . deactivate.
 								obstacle1_selected=false;//print ("3?location");
 								obstacle2_selected=false;
 						}
+
+						
 						}
 					}
 
+				}
 				}
 
 				

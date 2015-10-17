@@ -6,6 +6,7 @@ public class Director_Controller : MonoBehaviour {
 	
 	public  Mouse_Click_Agent  mouse_clik_tracking;
 	public  GameObject agent1;
+	public  GameObject agent2;
 	//public  GameObject door1;
 	//public  GameObject door2;
 	//public  bool agent1_processed;
@@ -31,7 +32,15 @@ public class Director_Controller : MonoBehaviour {
 		}
 
 
-
+		if (mouse_clik_tracking.agent2_selected == true && mouse_clik_tracking.target_setting_possible==true) { //only trying to set the target then it is true.
+			//send current postion.
+			print ("agent2");
+			agent2.BroadcastMessage("agent_path",mouse_clik_tracking.target_position); //can I desgine...objet.
+			mouse_clik_tracking.agent2_selected=false;
+			mouse_clik_tracking.target_setting_possible=false;
+			//mouse_clik_tracking.agent1_selected=false; //here can be changed?
+			
+		}
 
 			
 		//	agent2.BroadcastMessage("agent_path",mouse_clik_tracking.target_position); //can I desgine...objet.
