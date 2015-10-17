@@ -1,0 +1,108 @@
+fileFormatVersion: 2
+guid: 5c8e394d94cd9574d9b9d0cd6c33827b
+timeCreated: 1441923863
+licenseType: Store
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: abdomen
+    100002: abdomen2
+    100004: aprilyshMicahG2F_67576.Shape_feathered
+    100006: aprilyshMicahG2F_67576.Shape_opaque
+    100008: chest
+    100010: Genesis 2 Female
+    100012: head
+    100014: hip
+    100016: lCollar
+    100018: //RootNode
+    100020: MicahHairG2F
+    100022: neck
+    100024: rCollar
+    100026: Genesis2Female
+    400000: abdomen
+    400002: abdomen2
+    400004: aprilyshMicahG2F_67576.Shape_feathered
+    400006: aprilyshMicahG2F_67576.Shape_opaque
+    400008: chest
+    400010: Genesis 2 Female
+    400012: head
+    400014: hip
+    400016: lCollar
+    400018: //RootNode
+    400020: MicahHairG2F
+    400022: neck
+    400024: rCollar
+    400026: Genesis2Female
+    4300000: aprilyshMicahG2F_67576.Shape_opaque
+    4300002: aprilyshMicahG2F_67576.Shape_feathered
+    9500000: //RootNode
+    11400000: aprilyshMicahG2F_67576.Shape_feathered
+    11400002: aprilyshMicahG2F_67576.Shape_feathered
+    11400004: aprilyshMicahG2F_67576.Shape_opaque
+    11400006: aprilyshMicahG2F_67576.Shape_opaque
+    11400008: MicahHairG2F
+    11400010: MicahHairG2F
+    13700000: aprilyshMicahG2F_67576.Shape_feathered
+    13700002: aprilyshMicahG2F_67576.Shape_opaque
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
