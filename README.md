@@ -9,6 +9,7 @@
 
 This project shows off the navigation and animation features in Unity
 and how they can be integrated together, with these three parts:
+
 1. navigation using the Unity navmesh agent
 2. animation using the Unity mecanim system
 3. a combination of navigation and animation
