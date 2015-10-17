@@ -3,7 +3,7 @@
 ###### By: *Diana Kim, Jeff Ames*
 <!-- Check out our website: [Group Name Website](https://www.groupname.com "Group name website") -->
 
-![leaves](leaves.png)
+<img src="leaves.png" width="300" height="314" alt="leaves logo"/>
 
 ###B1: Navigation and Animation
 1. I am a fun project!
