@@ -1,7 +1,7 @@
 # Leaves
 ###### Unity Projects - CG Fall 2015 @ Rutgers
 ###### By: *Diana Kim, Jeff Ames*
-<!-- Check out our website: [Group Name Website](https://www.groupname.com "Group name website") -->
+Check out our website: [sproutleaves.blogspot.com](https://sproutleaves.blogspot.com/ "Leaves website")
 
 <img src="leaves.png" width="300" height="314" alt="leaves logo"/>
 
