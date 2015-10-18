@@ -5,12 +5,12 @@ public class Camera_Controller : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-	
+
 		transform.position = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z);
 	}
 }
