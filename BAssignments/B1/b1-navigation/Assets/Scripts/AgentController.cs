@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Agent_Controller : MonoBehaviour {
+public class AgentController : MonoBehaviour {
 
-
+	public Mouse_Click_Agent mouse_controller;
+    public int agentNum;
 
 	private NavMeshAgent nav_agent;
 	private NavMeshPath path;
 	private bool set_destination;
 	private new Vector3 offset;
-	public Mouse_Click_Agent mouse_controller;
 
 	// Use this for initialization
 	void Start () {
@@ -21,7 +21,7 @@ public class Agent_Controller : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//checking the path completion.
-		if (mouse_controller.destination_go&&mouse_controller.state_of_agent==1&&set_destination == true) //before going set to zero.
+		if (mouse_controller.destination_go && mouse_controller.state_of_agent==agentNum && set_destination == true) //before going set to zero.
 		{
 			offset=transform.position-nav_agent.destination;
 			if(offset.sqrMagnitude <0.2) //close to goal
@@ -40,5 +40,4 @@ public class Agent_Controller : MonoBehaviour {
 		nav_agent.destination=target_position;
 		set_destination = true;
 	}
-
 }

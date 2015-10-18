@@ -7,8 +7,7 @@ public class Mouse_Click_Agent : MonoBehaviour {
 	//public bool agent_selected;
 	public Camera camera;
 	public bool destination_go;
-	public bool obstacle1_flag;
-	public bool obstacle2_flag;
+	public int selected_obstacle;
 	public Vector3 target_position;
 
 	public int number_of_clicks;
@@ -22,23 +21,16 @@ public class Mouse_Click_Agent : MonoBehaviour {
 		state_of_agent = 0;
 		destination_go = false;
 		current_time = 0;
-		obstacle1_flag = false;
-		obstacle2_flag = false;
+		selected_obstacle = -1;
 	}
-
 
 	void Update(){
 		if (Input.GetMouseButtonDown (0)) {
-
-
 			if (Physics.Raycast (camera.ScreenPointToRay (Input.mousePosition), out hit, 100)) {
-
-
+                selected_obstacle = -1;
 
 				switch (hit.transform.gameObject.tag) {
 				case "agent1":
-					obstacle1_flag=false;
-					obstacle2_flag=false;
 					if (state_of_agent!=(int)agent.agent_1 && state_of_agent!=(int)agent.destination)
 						new_agent_state((int)agent.agent_1);
 
@@ -52,13 +44,9 @@ public class Mouse_Click_Agent : MonoBehaviour {
 						number_of_clicks=1;
 					}
 
-
-
 					//state_mouse (agent_1);
 					break;
 				case "agent2":
-					obstacle1_flag=false;
-					obstacle2_flag=false;
 					if (state_of_agent!=(int)agent.agent_2 && state_of_agent!=(int)agent.destination)
 						new_agent_state((int)agent.agent_2);
 
@@ -72,13 +60,9 @@ public class Mouse_Click_Agent : MonoBehaviour {
 						number_of_clicks=1;
 					}
 
-
-
 					//sta
 					break;
 				case "agent3":
-					obstacle1_flag=false;
-					obstacle2_flag=false;
 					if (state_of_agent!=(int)agent.agent_3 && state_of_agent!=(int)agent.destination)
 						new_agent_state((int)agent.agent_3);
 
@@ -92,13 +76,9 @@ public class Mouse_Click_Agent : MonoBehaviour {
 						number_of_clicks=1;
 					}
 
-
-
 					//sta
 					break;
 				case "agent4":
-					obstacle1_flag=false;
-					obstacle2_flag=false;
 					if (state_of_agent!=(int)agent.agent_4&& state_of_agent!=(int)agent.destination)
 						new_agent_state((int)agent.agent_4);
 
@@ -114,8 +94,6 @@ public class Mouse_Click_Agent : MonoBehaviour {
 
 					break;
 				case "agent5":
-					obstacle1_flag=false;
-					obstacle2_flag=false;
 					if (state_of_agent!=(int)agent.agent_5 && state_of_agent!=(int)agent.destination)
 						new_agent_state((int)agent.agent_5);
 
@@ -130,47 +108,30 @@ public class Mouse_Click_Agent : MonoBehaviour {
 					}
 					break;
 				case "obstacle1":
-					obstacle2_flag=false;
-					obstacle1_flag=true;
+					selected_obstacle = 1;
 					break;
 
 				case "obstacle2":
-					obstacle1_flag=false;
-					obstacle2_flag=true;
+					selected_obstacle = 2;
 					break;
 
-
-					//sta
-					break;
 				default: //destination. //click the target.
-					obstacle1_flag=false;
-					obstacle2_flag=false;
 					if (state_of_agent==(int)agent.agent_0)
-
 						;// do nothing.
-
 					else
-					{
 						go_destination_state ();
-					}
 					break;
 				}
-
 			}
-
 		}
-
 	}
 	//return to idel state only when completing of path.
 
 	void new_agent_state(int input)
 	{
-
 		state_of_agent = input; // new state update
 		current_time = Time.realtimeSinceStartup; // current time.
 		number_of_clicks = number_of_clicks + 1;
-
-
 	}
 
 	bool check_mulitple_click ( )
@@ -187,4 +148,3 @@ public class Mouse_Click_Agent : MonoBehaviour {
 		target_position=hit.point; //where to go.
 	}
 }
-
