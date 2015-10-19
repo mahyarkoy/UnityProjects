@@ -1,0 +1,10 @@
+---OVERVIEW---
+I used Mechanim to create a prefab model of a humanoid that utilizes 3 stages of movement. The model has the ability to stand idle, walk forward and backwards while also being able to move left and right for both forwards and backwards movements.  The animation can also sprint when the left shift key is held down and resort back to its walking animation when the key is not pressed.  In addition, the model can execute a jump from any of the 3 movements by pressing the space bar and continue moveing or idleing when the jump animation is complete.  The prefab also comes with its own third person camera, which is locked behind the model as the model moves.
+
+---CONTROLS---
+Up arrow: move forward
+Down arrow: move backwards
+Left arrow: turn left
+Right arrow: turn right
+Left shift: Hold to sprint
+Spacebar: jump

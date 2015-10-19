@@ -1,0 +1,27 @@
+---OVERVIEW---
+Red cylinders are the player agents.
+Blue objects are the movable obstacles.
+Orange cubes are the roaming devils.
+Purple spheres are the nazgul agents.
+The Brown parts of the environment can be jumped across/on.
+
+---CONTROLS---
+Select agents/obstacles by left clicking them.
+To selected multiple agents, left click and drag. This creates a selection box which, upon release of the left mouse button, selects all agents/obstacles in the box.
+Left click empty space to deselect all agents.
+Right click to move selected agents to a point.
+Use the arrow keys to move selected obstacles.
+
+---QUESTIONS---
+8. Obstacles that carve augment the navigation mesh. The mesh is created with these objects in mind so agents wont touch these objects. Agents will not path around non-carving obstacles and will collide with them if they are in the way of their path.
+8a. Too many moving obstacles that carve make it too time consuming to calculate a path (The navigation mesh is always changing).
+8b. The agents will always try to travel the shortest path on the navigation mesh, colliding with any obstacles along the way. It'll keep pushing into the obstacle until something changes (obstacles moves, agent slides along slope of obstacle eventually passing it).
+9. Giving the obstacles a force/velocity field around them will cause them to be avoided.
+10. Too many dynamic carving obstacles makes the agents freeze up. The navigation mesh is constantly changing, possibly faster than the agent can calculate a path.
+
+---EXTRA CREDIT: ROAMING DEVILS---
+I decided to have the roaming devils only carve the mesh when there is an agent nearby. The agents check the to see if any devils are in a certain radius of the agent. If so, the agent makes the nearby devils carve the mesh and recalculates its path. Once out of the radius of the agent, the devils stop carving the mesh. This reduces the amount of variance in the navigation mesh per time as not all devils are constantly carving the mesh. I chose this over the velocity fields because this method also allows the agents to repath around a bottleneck filled with devils. The velocity field method would have the agents keep trying to enter the bottleneck after being pushed away.
+If a destination is found to be unreachable, then the agent sets its destination to the a reachable point closest to this old destination. However, once it reaches this point, it checks again if the unreachable destination is now reachable and attempt to travel there. 
+
+---EXTRA CREDIT: NAZGULS---
+I attached a velocity field to the nazguls. There is trigger sphere connected to the nazgul agents, that, when agent is colliding with the trigger, its velocity is set facing away from the center of the sphere. This allows the agents to not approach the nazgul as well as the nazguls to push away player agents while the nazgul is traveling.
