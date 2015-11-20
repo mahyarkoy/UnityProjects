@@ -26,20 +26,24 @@ public class Movement_BehaviorTree : MonoBehaviour
 		
 	}
 	
-	protected Node ST_ApproachAndWait(Transform target)
+	protected Node ST_ApproachAndWait(GameObject participants,Transform target)
 	{
 		Val<Vector3> position = Val.V (() => target.position);
-		return new Sequence( Daniel.GetComponent<BehaviorMecanim>().Node_GoTo(position), new LeafWait(1000));
+		return new Sequence(participants.GetComponent<BehaviorMecanim>().Node_GoTo(position), new LeafWait(1000));
 	}
 	
 	protected Node BuildTreeRoot()
 	{
 		return
-			new DecoratorLoop(
+			//new DecoratorLoop (
+			new SequenceParallel(this.ST_ApproachAndWait (this.Daniel, this.wander1),this.ST_ApproachAndWait (this.Tom, this.wander1),this.ST_ApproachAndWait (this.Richard, this.wander1));
+				/*;
+				, this.ST_ApproachAndWait (this.Tom, this.wander1), this.ST_ApproachAndWait (this.Richard, this.wander1)));
+				/*new DecoratorLoop(
 				new SequenceShuffle(
 				this.ST_ApproachAndWait(this.wander1)));
 				//this.ST_ApproachAndWait(this.wander2),
-				//this.ST_ApproachAndWait(this.wander3)));
+				//this.ST_ApproachAndWait(this.wander3)));*/
 	}
 }
 
