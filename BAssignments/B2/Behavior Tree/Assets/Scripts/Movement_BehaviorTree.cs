@@ -4,9 +4,8 @@ using TreeSharpPlus;
 
 public class Movement_BehaviorTree : MonoBehaviour
 {
-    public Transform wander1;
-    //public Transform wander2;
-    //public Transform wander3;
+    public Transform meetingPoint;
+
     public GameObject Daniel;
     public GameObject Tom;
     public GameObject Richard;
@@ -33,15 +32,10 @@ public class Movement_BehaviorTree : MonoBehaviour
     protected Node BuildTreeRoot()
     {
         return
-            //new DecoratorLoop (
-            new SequenceParallel(this.ST_ApproachAndWait (this.Daniel, this.wander1),this.ST_ApproachAndWait (this.Tom, this.wander1),this.ST_ApproachAndWait (this.Richard, this.wander1));
-                /*;
-                , this.ST_ApproachAndWait (this.Tom, this.wander1), this.ST_ApproachAndWait (this.Richard, this.wander1)));
-                /*new DecoratorLoop(
-                new SequenceShuffle(
-                this.ST_ApproachAndWait(this.wander1)));
-                //this.ST_ApproachAndWait(this.wander2),
-                //this.ST_ApproachAndWait(this.wander3)));*/
+            //new DecoratorLoop(
+            new SequenceParallel(this.ST_ApproachAndWait(this.Daniel,  this.meetingPoint),
+                                 this.ST_ApproachAndWait(this.Tom,     this.meetingPoint),
+                                 this.ST_ApproachAndWait(this.Richard, this.meetingPoint));
     }
 }
 
