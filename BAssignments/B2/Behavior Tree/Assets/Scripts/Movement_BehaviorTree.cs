@@ -4,11 +4,13 @@ using TreeSharpPlus;
 
 public class Movement_BehaviorTree : MonoBehaviour
 {
-    public Transform meetingPoint;
+    public Transform meetingPointDaniel;
+    public Transform meetingPointRichard;
+    public Transform meetingPointTom;
 
     public GameObject Daniel;
-    public GameObject Tom;
     public GameObject Richard;
+    public GameObject Tom;
 
     private BehaviorAgent behaviorAgent;
 
@@ -33,9 +35,9 @@ public class Movement_BehaviorTree : MonoBehaviour
     {
         return
             //new DecoratorLoop(
-            new SequenceParallel(this.ST_ApproachAndWait(this.Daniel,  this.meetingPoint),
-                                 this.ST_ApproachAndWait(this.Tom,     this.meetingPoint),
-                                 this.ST_ApproachAndWait(this.Richard, this.meetingPoint));
+            new SequenceParallel(this.ST_ApproachAndWait(this.Daniel,  this.meetingPointDaniel),
+                                 this.ST_ApproachAndWait(this.Richard, this.meetingPointRichard),
+                                 this.ST_ApproachAndWait(this.Tom,     this.meetingPointTom));
     }
 }
 
