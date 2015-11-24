@@ -16,7 +16,7 @@ public class Movement_BehaviorTree : MonoBehaviour
 
     void Start()
     {
-        behaviorAgent = new BehaviorAgent(this.BuildTreeRoot());
+        behaviorAgent = new BehaviorAgent(BuildTreeRoot());
         BehaviorManager.Instance.Register(behaviorAgent);
         behaviorAgent.StartBehavior();
     }
@@ -25,19 +25,27 @@ public class Movement_BehaviorTree : MonoBehaviour
     {
     }
 
-    protected Node ST_ApproachAndWait(GameObject participants,Transform target)
+    protected Node ST_ApproachAndWait(GameObject participants, Transform target)
     {
         Val<Vector3> position = Val.V (() => target.position);
         return new Sequence(participants.GetComponent<BehaviorMecanim>().Node_GoTo(position), new LeafWait(1000));
     }
 
+    protected Node ST_Chat(GameObject participants)
+    {
+        return new Sequence(participants.GetComponent<BehaviorMecanim>().Node_BodyAnimation("ADAPTMan@shaking_head_no", true), new LeafWait(1000));
+    }
+
     protected Node BuildTreeRoot()
     {
-        return
-            //new DecoratorLoop(
-            new SequenceParallel(this.ST_ApproachAndWait(this.Daniel,  this.meetingPointDaniel),
-                                 this.ST_ApproachAndWait(this.Richard, this.meetingPointRichard),
-                                 this.ST_ApproachAndWait(this.Tom,     this.meetingPointTom));
+        Node walkToMeetingPoint = new SequenceParallel(
+            ST_ApproachAndWait(Daniel,  meetingPointDaniel),
+            ST_ApproachAndWait(Richard, meetingPointRichard),
+            ST_ApproachAndWait(Tom,     meetingPointTom));
+
+        Node chat = new ForEach<GameObject>((GameObject participant) => ST_Chat(participant), new [] {Daniel, Richard, Tom});
+
+        return new Sequence(walkToMeetingPoint, chat);
     }
 }
 
