@@ -14,6 +14,8 @@ public enum AnimationLayer
 
 public class BehaviorMecanim : MonoBehaviour
 {
+	//public Behavior_Tree_Monitor Behavior_tree_state;
+
     [HideInInspector]
     public CharacterMecanim Character = null;
 
@@ -307,5 +309,11 @@ public class BehaviorMecanim : MonoBehaviour
             new Sequence(
                 new LeafInvoke(turn, stopTurning));
     }
+
+	public Node ST_checking_status(story_status story)
+	{
+		print (" do you have a problem here");
+		return new LeafInvoke (() => this.Character.current_story_arc(story));
+	}
     #endregion
 }

@@ -57,6 +57,7 @@ public class BodyMecanim : MonoBehaviour
 
     private Interpolator<Vector3> nudge = null;
 
+
     public SteeringController Steering
     {
         get
@@ -631,6 +632,7 @@ public class BodyMecanim : MonoBehaviour
         this.Steering.Attached = value;
     }
 
+
     ///// <summary>
     ///// (SIMPLE) Moves a character1 instantly. Note that the character1 will
     ///// remain within the bounds of the navigation mesh.
@@ -697,5 +699,7 @@ public class BodyMecanim : MonoBehaviour
         if (this.InteractionStop != null)
             this.InteractionStop(effectorType, interactionObject);
     }
+
+
     #endregion
 }

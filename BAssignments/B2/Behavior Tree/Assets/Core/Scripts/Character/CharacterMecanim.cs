@@ -14,9 +14,12 @@ public class CharacterMecanim : MonoBehaviour
 
     private Dictionary<FullBodyBipedEffector, bool> triggers;
     private Dictionary<FullBodyBipedEffector, bool> finish;
+	public Behavior_Tree_Monitor  Behavior_tree_state=null;
+
 
     [HideInInspector]
-    public BodyMecanim Body = null;
+	public BodyMecanim Body = null;
+	
 
     void Awake() { this.Initialize(); }
 
@@ -28,6 +31,7 @@ public class CharacterMecanim : MonoBehaviour
         this.Body = this.GetComponent<BodyMecanim>();
         this.Body.InteractionTrigger += this.OnInteractionTrigger;
         this.Body.InteractionStop += this.OnInteractionFinish;
+		this.Behavior_tree_state = this.GetComponent<Behavior_Tree_Monitor> ();
     }
 
     private void OnInteractionTrigger(
@@ -200,6 +204,7 @@ public class CharacterMecanim : MonoBehaviour
 	/// </summary>
 	public virtual RunStatus NavStop()
     {
+
         this.Body.NavStop();
         if (this.Body.NavIsStopped() == true)
             return RunStatus.Success;
@@ -326,4 +331,29 @@ public class CharacterMecanim : MonoBehaviour
         return RunStatus.Running;
     }
     #endregion
+
+
+	#region Diana_status_check#
+
+	public virtual RunStatus current_story_arc(story_status story)
+	{
+		//print (" character behavior problem");
+		//return RunStatus.Failure;	
+	
+		if (this.Behavior_tree_state.current_story_status != story) {
+		print ("success");
+
+			return RunStatus.Success;
+		}
+		else
+		{ print ("fail");
+			return RunStatus.Failure;
+		}	
+	}
+
+
+
+	#endregion
+
+
 }
