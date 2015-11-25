@@ -33,7 +33,13 @@ public class Movement_BehaviorTree : MonoBehaviour
 
     protected Node ST_Chat(GameObject participants)
     {
-        return new Sequence(participants.GetComponent<BehaviorMecanim>().Node_BodyAnimation("ADAPTMan@shaking_head_no", true), new LeafWait(1000));
+        // Val<string> gesture = Val.V (() => "ADAPTMan@shaking_head_no");
+        // Val<long> duration = Val.V (() => 1000L);
+        Val<Vector3> target = Val.V (() => new Vector3(0, 0, 0));
+
+        // return new DecoratorLoop(new SequenceShuffle(participants.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture(gesture, duration), new LeafWait(1000)));
+        // return new SequenceShuffle(participants.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture(gesture, duration), new LeafWait(1000));
+        return new SequenceShuffle(participants.GetComponent<BehaviorMecanim>().ST_TurnToFace(target));
     }
 
     protected Node BuildTreeRoot()
