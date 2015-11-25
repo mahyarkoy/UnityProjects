@@ -7,6 +7,10 @@ public class Story_Monitor : MonoBehaviour {
 	public Transform meetingPointDaniel;
 	public Transform meetingPointRichard;
 	public Transform meetingPointTom;
+	public Transform Box1pickup;
+	public Transform Box2pickup;
+	public Transform Box5pickup;
+
 	
 	public GameObject Daniel;
 	public GameObject Richard;
@@ -22,22 +26,25 @@ public class Story_Monitor : MonoBehaviour {
 
 	public Behavior_Tree_Monitor behavior_tree;
 	
-
+	/*
 	private Transform box1_transform; 
 	private Transform box2_transform; 
 	private Transform box3_transform ;
 	private Transform box4_transform ;
-	private Transform box5_transform ;
+	private Transform box5_transform ;*/
 	void Start()
 	{
 		//behaviorAgent = new BehaviorAgent(BuildTreeRoot());
 		///BehaviorManager.Instance.Register(behaviorAgent);
 		//behaviorAgent.StartBehavior();
-		 box1_transform = Box1.transform;
-		 box2_transform = Box2.transform;
-		 box3_transform = Box3.transform;
-		 box4_transform = Box4.transform;
-	     box5_transform = Box5.transform;
+		// box1_transform = Box1.transform;
+		// box2_transform = Box2.transform;
+		// box3_transform = Box3.transform;
+		// box4_transform = Box4.transform;
+	    // box5_transform = Box5.transform;
+
+
+		//print ("here Start");
 
 	}
 
@@ -98,11 +105,11 @@ public class Story_Monitor : MonoBehaviour {
 		
 		print (" here is story two process");
 		Node walkToMeetingPoint = new SequenceParallel(                          
-			                                               ST_Appraoch_at_certain_raidusAndWait(Daniel,box5_transform,1),
-			                                               ST_Appraoch_at_certain_raidusAndWait(Richard,box1_transform,1)
-		                                               /*ST_ApproachAndWait(Tom,     box1_transform)*/);
+		                                               ST_ApproachAndWait(Daniel,Box1pickup),
+		                                               ST_ApproachAndWait(Richard,Box5pickup));
+		                                               /*ST_ApproachAndWait(Tom,     box1_transform)*/
 		print ("After walking");
-		if (walkToMeetingPoint.LastStatus == RunStatus.Running)
+		if (walkToMeetingPoint.LastStatus == RunStatus.Success)
 			behavior_tree.meet_one_point = true; //flag set.
 		//Node chat = new ForEach<GameObject>((GameObject participant) => ST_Chat(participant), new [] {Daniel, Richard, Tom});
 		
@@ -112,14 +119,15 @@ public class Story_Monitor : MonoBehaviour {
 	}
 	protected Node ST_story_one() //position, and participants.
 	{
-		return //any of one true.
-			new SelectorParallel(this.ST_check_status(story_status.Meeting_One_Point), this.ST_story_one_arc());
+		return //two of these true.
+			new SelectorParallel(this.ST_check_status(story_status.Meeting_One_Point), this.ST_story_one_arc(),new LeafWait(10000));
 	}
 
 	protected Node ST_story_two() //position, and participants.
 	{
+		print ("this is story two process");
 		return //any of one true.
-			new SelectorParallel(this.ST_check_status(story_status.Box_Moving), this.ST_story_two_arc());
+			new SelectorParallel(this.ST_check_status(story_status.Box_Moving),this.ST_story_two_arc(),new LeafWait(10000));
 	}
 
 
@@ -129,8 +137,14 @@ public class Story_Monitor : MonoBehaviour {
 	public Node B2_ST_Story_selector()
 	
 	{
+
 		return 
-			new DecoratorLoop(new Sequence (this.ST_story_one()/*,this.ST_story_two()*/));//,ST_story_two,ST_story_three,ST_story_four));
+			//new DecoratorLoop(new Sequence(this.ST_story_one(),ST_Appraoch_at_certain_raidusAndWait(Daniel,Box5.transform,2)));//,ST_story_two,ST_story_three,ST_story_four));
+			/*new DecoratorLoop(new Sequence(ST_Appraoch_at_certain_raidusAndWait(Daniel, Box5.transform,2),
+			                               ST_Appraoch_at_certain_raidusAndWait(Richard, Box1.transform,2)
+			                               ));*/
+			new DecoratorLoop(new Sequence(ST_story_one(),ST_story_two()));
+
 	}
 
 	
