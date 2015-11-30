@@ -14,18 +14,13 @@ and how they can be integrated together, with these three parts:
 2. animation using the Unity mecanim system
 3. a combination of navigation and animation
 
+###B2: Behavior Trees
+
+This project uses a interactive behavior tree in Unity to create
+realistic animation and agent behavior.
+
 <!--
-###B2: Inverse Kinematics
-1. I am a hard project!
-2. Features
-3. Description
-
-###B3: Behavior Trees
-1. I am a cool project!
-2. Features
-3. Description
-
-###B4: Interactive Narrative Game
+###B3: Interactive Narrative Game
 1. I am a real project!
 2. Features
 3. Description
