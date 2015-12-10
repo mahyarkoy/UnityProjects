@@ -1,2 +1,0 @@
-This is B3 project.
-Create B3 project in this folder.
