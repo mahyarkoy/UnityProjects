@@ -30,10 +30,12 @@ public class BehaviorTree : MonoBehaviour
     public Transform meetingPointChar1;
     public Transform meetingPointChar2;
     public Transform meetingPointChar3;
+    public Transform meetingPointChar4;
 
     public GameObject Char1;
     public GameObject Char2;
     public GameObject Char3;
+    public GameObject Char4;
 
     private BehaviorAgent behaviorAgent;
 
@@ -145,7 +147,8 @@ public class BehaviorTree : MonoBehaviour
         Node walkToMeetingPoint = new SequenceParallel(
             ST_ApproachAndWait(Char1, meetingPointChar1),
             ST_ApproachAndWait(Char2, meetingPointChar2),
-            ST_ApproachAndWait(Char3, meetingPointChar3));
+            ST_ApproachAndWait(Char3, meetingPointChar3),
+            ST_ApproachAndWait(Char4, meetingPointChar4));
 
         if (walkToMeetingPoint.LastStatus == RunStatus.Running)
             meet_one_point = true;
@@ -158,7 +161,8 @@ public class BehaviorTree : MonoBehaviour
         Node walkToMeetingPoint = new SequenceParallel(
             ST_ApproachAndWait(Char1, meetingPointChar1),
             ST_ApproachAndWait(Char2, meetingPointChar2),
-            ST_ApproachAndWait(Char3, meetingPointChar3));
+            ST_ApproachAndWait(Char3, meetingPointChar3),
+            ST_ApproachAndWait(Char4, meetingPointChar4));
 
         return new SelectorParallel(new Sequence(walkToMeetingPoint), new LeafWait(10000));
     }
