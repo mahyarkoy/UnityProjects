@@ -47,7 +47,7 @@ namespace TreeSharpPlus
                 {
                     if (this.childStatus[i] == RunStatus.Running)
                     {
-                        Node node = this.Children[i];
+						Node node = this.Children[i];
                         RunStatus tickResult = this.TickNode(node);
 
                         // Check to see if anything finished

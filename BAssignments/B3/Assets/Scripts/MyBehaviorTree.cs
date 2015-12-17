@@ -17,11 +17,11 @@ public class MyBehaviorTree : MonoBehaviour
 		BehaviorManager.Instance.Register (behaviorAgent);
 		behaviorAgent.StartBehavior ();
 	}
-	
+
 	// Update is called once per frame
 	void Update ()
 	{
-	
+
 	}
 
 	protected Node ST_ApproachAndWait(Transform target)
@@ -36,7 +36,7 @@ public class MyBehaviorTree : MonoBehaviour
 			new DecoratorLoop(
 				new SequenceShuffle(
 					this.ST_ApproachAndWait(this.wander1)));
-					//this.ST_ApproachAndWait(this.wander2),
-					//this.ST_ApproachAndWait(this.wander3)));
+		//this.ST_ApproachAndWait(this.wander2),
+		//this.ST_ApproachAndWait(this.wander3)));
 	}
 }

@@ -23,6 +23,8 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine;
+using System.Collections;
 
 namespace TreeSharpPlus
 {
@@ -43,11 +45,11 @@ namespace TreeSharpPlus
         {
             while (true)
             {
-                for (int i = 0; i < this.Children.Count; i++)
+				for (int i = 0; i < this.Children.Count; i++)
                 {
                     if (this.childStatus[i] == RunStatus.Running)
                     {
-                        Node node = this.Children[i];
+						Node node = this.Children[i];
                         RunStatus tickResult = this.TickNode(node);
 
                         // Check to see if anything finished

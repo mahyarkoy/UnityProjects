@@ -39,6 +39,7 @@ namespace TreeSharpPlus
         {
             base.Stop();
             this.runningChildren = 0;
+			this.childStatus.Clear ();
         }
 
         protected RunStatus TerminateChildren()

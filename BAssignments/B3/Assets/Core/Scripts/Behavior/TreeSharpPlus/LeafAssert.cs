@@ -4,6 +4,8 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
+using UnityEngine;
+using System.Collections;
 
 namespace TreeSharpPlus
 {
@@ -25,7 +27,8 @@ namespace TreeSharpPlus
             if (this.func_assert != null)
             {
                 bool result = this.func_assert.Invoke();
-                if (result == true)
+				//Debug.Log(result);
+				if (result == true)
                     yield return RunStatus.Success;
                 else
                     yield return RunStatus.Failure;
