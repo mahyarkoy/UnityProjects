@@ -126,12 +126,12 @@ public class BehaviorTree : MonoBehaviour
 		// return new SequenceShuffle(participants.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture(gesture, duration), new LeafWait(1000));
 		return new SequenceShuffle(participants.GetComponent<BehaviorMecanim>().ST_TurnToFace(target));
 	}
-
+	/*
 	protected Node ST_check_status(story_status story)
 	{
 		return new DecoratorLoop (new Sequence(Daniel.GetComponent<BehaviorMecanim>().ST_checking_status(story), new LeafWait (1000)));
 	}
-
+*/
 	protected Node ST_story_one_arc()
 	{
 		print(" here is story one process");
@@ -165,15 +165,15 @@ public class BehaviorTree : MonoBehaviour
 	protected Node ST_story_one() //position, and participants.
 	{
 		return //two of these true.
-			new SelectorParallel(this.ST_check_status(story_status.Meeting_One_Point), this.ST_story_one_arc(),new LeafWait(10000));
+			new SelectorParallel(/*this.ST_check_status(story_status.Meeting_One_Point), */this.ST_story_one_arc(),new LeafWait(10000));
 	}
 
 	protected Node ST_story_two() //position, and participants.
 	{
 		print("this is story two process");
 		return //any of one true.
-			new SelectorParallel(this.ST_check_status(story_status.Box_Moving),
-                //this.ST_story_two_arc(),
+			new SelectorParallel(/*this.ST_check_status(story_status.Box_Moving),
+                //this.ST_story_two_arc(),*/
                 new LeafWait(10000));
 	}
 

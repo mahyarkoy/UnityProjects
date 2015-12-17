@@ -15,8 +15,6 @@ public class CharacterMecanim : MonoBehaviour
     private Dictionary<FullBodyBipedEffector, bool> triggers;
     private Dictionary<FullBodyBipedEffector, bool> finish;
 
-	public BehaviorTree BehaviorTree = null;
-
     [HideInInspector]
     public BodyMecanim Body = null;
 
@@ -30,7 +28,6 @@ public class CharacterMecanim : MonoBehaviour
         this.Body = this.GetComponent<BodyMecanim>();
         this.Body.InteractionTrigger += this.OnInteractionTrigger;
         this.Body.InteractionStop += this.OnInteractionFinish;
-		this.BehaviorTree = this.GetComponent<BehaviorTree> ();
     }
 
     private void OnInteractionTrigger(
@@ -328,15 +325,5 @@ public class CharacterMecanim : MonoBehaviour
         this.Body.StandUp();
         return RunStatus.Running;
     }
-
-    public virtual RunStatus current_story_arc(story_status story)
-	{
-		if (this.BehaviorTree.current_story_status != story) {
-			return RunStatus.Success;
-		} else {
-			return RunStatus.Failure;
-		}
-	}
-
     #endregion
 }

@@ -307,10 +307,5 @@ public class BehaviorMecanim : MonoBehaviour
             new Sequence(
                 new LeafInvoke(turn, stopTurning));
     }
-
-    public Node ST_checking_status(story_status story)
-	{
-		return new LeafInvoke (() => this.Character.current_story_arc(story));
-	}
     #endregion
 }
