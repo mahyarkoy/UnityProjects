@@ -2,21 +2,27 @@
 using System.Collections;
 using TreeSharpPlus;
 
-public enum story_status //story state according to the input status.
+public enum StoryStatus //story state according to the input status.
 {
-	Meeting_One_Point, //current object.
-	Waiting_input,
-	Box_Moving,
-	Soccer_Playing,
-	Shaking_hands_and_Bye,
-	The_End,
+	Meeting,
+    Train,
+    Butterfly,
+    Mom,
+    Fall,
+    Car,
+    GoHome,
+    Accident,
+    Cry,
+	TheEnd
 }
 
-public enum user_input_status
+public enum InputStatus
 {
-	None_input,
-	Box_Move,
-	Soccer_Play,
+    None,
+    Butterfly,
+    Mom,
+    Fall,
+    Car
 }
 
 public class BehaviorTree : MonoBehaviour
@@ -31,23 +37,17 @@ public class BehaviorTree : MonoBehaviour
 
     private BehaviorAgent behaviorAgent;
 
-	public story_status current_story_status;
-	public story_status update_current_story_status;
-	public story_status previous_status;
-	public user_input_status user_status;
-	public bool box_move_flag;
-	public bool soccer_play_flag;
+	public StoryStatus story_status;
+	public StoryStatus previous_status;
+	public InputStatus input;
+
 	public bool meet_one_point;
-	//public int run_status; //updated by behavior tree.
 
     void Start()
     {
-		current_story_status = story_status.Meeting_One_Point;
-		update_current_story_status = story_status.Meeting_One_Point;
-		previous_status = story_status.Meeting_One_Point;
-		user_status = user_input_status.None_input;
-		box_move_flag = false;
-		soccer_play_flag = false;
+		story_status = StoryStatus.Meeting;
+		previous_status = StoryStatus.Meeting;
+		input = InputStatus.None;
 
         behaviorAgent = new BehaviorAgent(BuildTreeRoot());
         BehaviorManager.Instance.Register(behaviorAgent);
@@ -56,48 +56,61 @@ public class BehaviorTree : MonoBehaviour
 
 	void Update()
     {
-		/*user_input_controller*/
-        if(Input.GetKey("up")) //moving box.
-			user_status = user_input_status.Box_Move;
-        if(Input.GetKey("down")) //soccer play.
-			user_status= user_input_status.Soccer_Play;
-        else //for other input key ignore now. but probably enxtended to others.
-			user_status= user_input_status.None_input;
+        if (Input.GetKey("up"))
+			input = InputStatus.Butterfly;
+        else if (Input.GetKey("down"))
+			input = InputStatus.Mom;
+        else if (Input.GetKey("left"))
+			input = InputStatus.Fall;
+        else if (Input.GetKey("right"))
+			input = InputStatus.Car;
+        else
+			input = InputStatus.None;
 
-		switch(current_story_status)
+		switch (story_status)
 		{
-            case story_status.Meeting_One_Point:
-                if (user_status ==user_input_status.Box_Move) {
-                    if (meet_one_point) {
-                        update_current_story_status = story_status.Box_Moving;
-                        print ("current state is meeting one point");
-                    }
-                }
+            case StoryStatus.Meeting:
+                story_status = StoryStatus.Train;
                 break;
-            case story_status.Box_Moving:
-                if (user_status==user_input_status.Soccer_Play) {
-					update_current_story_status=story_status.Soccer_Playing;
-				    if(!box_move_flag) // box not yet moved all.
-                        previous_status=story_status.Box_Moving;
 
-                    //update_current_story_status=story_status.Soccer_Playing;
-                }
+            case StoryStatus.Train:
+                if (input == InputStatus.Butterfly)
+                    story_status = StoryStatus.Butterfly;
+                else if (input == InputStatus.Mom)
+                    story_status = StoryStatus.Mom;
+                else if (input == InputStatus.Fall)
+                    story_status = StoryStatus.Fall;
+                else if (input == InputStatus.Car)
+                    story_status = StoryStatus.Car;
                 break;
-            case story_status.Soccer_Playing:
-                if (soccer_play_flag==true) {
-                    if (previous_status==story_status.Box_Moving)
-                        update_current_story_status=story_status.Box_Moving;
-                    else
-                        update_current_story_status=story_status.Shaking_hands_and_Bye;
-                }
+
+            case StoryStatus.Butterfly:
                 break;
-            case story_status.Shaking_hands_and_Bye:
-				update_current_story_status=story_status.The_End;
+
+            case StoryStatus.Mom:
+                break;
+
+            case StoryStatus.Fall:
+                break;
+
+            case StoryStatus.Car:
+                break;
+
+            case StoryStatus.GoHome:
+				story_status = StoryStatus.TheEnd;
+                break;
+
+            case StoryStatus.Accident:
+				story_status = StoryStatus.TheEnd;
+                break;
+
+            case StoryStatus.Cry:
+				story_status = StoryStatus.TheEnd;
+                break;
+
+            case StoryStatus.TheEnd:
                 break;
 		}
-
-        // update current story state. ? how the sync with node.
-		current_story_status = update_current_story_status;
 	}
 
 	protected Node ST_ApproachAndWait(GameObject participants, Transform target) // go to subtree.
@@ -127,7 +140,7 @@ public class BehaviorTree : MonoBehaviour
 		return new SequenceShuffle(participants.GetComponent<BehaviorMecanim>().ST_TurnToFace(target));
 	}
 	/*
-	protected Node ST_check_status(story_status story)
+	protected Node ST_check_status(StoryStatus story)
 	{
 		return new DecoratorLoop (new Sequence(Daniel.GetComponent<BehaviorMecanim>().ST_checking_status(story), new LeafWait (1000)));
 	}
@@ -165,25 +178,20 @@ public class BehaviorTree : MonoBehaviour
 	protected Node ST_story_one() //position, and participants.
 	{
 		return //two of these true.
-			new SelectorParallel(/*this.ST_check_status(story_status.Meeting_One_Point), */this.ST_story_one_arc(),new LeafWait(10000));
+			new SelectorParallel(/*this.ST_check_status(StoryStatus.Meeting), */this.ST_story_one_arc(),new LeafWait(10000));
 	}
 
 	protected Node ST_story_two() //position, and participants.
 	{
 		print("this is story two process");
 		return //any of one true.
-			new SelectorParallel(/*this.ST_check_status(story_status.Box_Moving),
+			new SelectorParallel(/*this.ST_check_status(StoryStatus.Box_Moving),
                 //this.ST_story_two_arc(),*/
                 new LeafWait(10000));
 	}
 
     protected Node BuildTreeRoot()
     {
-		return
-			//new DecoratorLoop(new Sequence(this.ST_story_one(),ST_Appraoch_at_certain_raidusAndWait(Daniel,Box5.transform,2)));//,ST_story_two,ST_story_three,ST_story_four));
-			/*new DecoratorLoop(new Sequence(ST_Appraoch_at_certain_raidusAndWait(Daniel, Box5.transform,2),
-			                               ST_Appraoch_at_certain_raidusAndWait(Richard, Box1.transform,2)
-			                               ));*/
-			new DecoratorLoop(new Sequence(ST_story_one(), ST_story_two()));
+		return new DecoratorLoop(new Sequence(ST_story_one(), ST_story_two()));
     }
 }
