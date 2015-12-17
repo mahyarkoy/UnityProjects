@@ -186,6 +186,9 @@ public class BehaviorTree : MonoBehaviour
 	{
 
 		Func<bool> story1  = () => true; // we have not implemented state of story.
+
+		Node meet_one_point = new DecoratorLoop(new SequenceParallel(this.ST_Meet_Wait(this.Tom,this.meetingPointChar1,2),this.ST_Meet_Wait(this.Chris,this.meetingPointChar1,2),this.ST_Meet_Wait(this.Harry,this.meetingPointChar1,2),this.ST_Meet_Wait(this.Daniel,this.meetingPointChar1,2)));
+
 	
 		Node train_play  = new DecoratorLoop (
 			/*new Sequence(
@@ -194,8 +197,7 @@ public class BehaviorTree : MonoBehaviour
                 this.ST_ApproachAndWait(this.Tom,this.meeting_point),
                 this.ST_ApproachAndWait(this.Harry,this.meeting_point)));*/
 
-			new SequenceParallel(this.ST_Meet_Wait(this.Tom,this.meetingPointChar1,2),this.ST_Meet_Wait(this.Chris,this.meetingPointChar1,2),this.ST_Meet_Wait(this.Harry,this.meetingPointChar1,2),this.ST_Meet_Wait(this.Daniel,this.meetingPointChar1,2)));
-
+			new Sequence(meet_one_point));
 		Node trigger = new DecoratorLoop (new LeafAssert (story1));
 		Node root_story = new DecoratorLoop (new DecoratorForceStatus (RunStatus.Success, new SequenceParallel(trigger,train_play)));
 
