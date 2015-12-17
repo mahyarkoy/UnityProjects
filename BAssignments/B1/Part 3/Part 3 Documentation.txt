@@ -1,0 +1,6 @@
+---OVERVIEW---
+Combining the previous two parts, I give the NavMeshAgents humanoid animations. They jump when traversing offMeshLinks. Double right-clicking in one area will cause the agents to sprint to this destination.
+
+---CONTROLS---
+Same as AssignmentB1: Part 1
+Double right-click: Makes agents sprint to the destination
