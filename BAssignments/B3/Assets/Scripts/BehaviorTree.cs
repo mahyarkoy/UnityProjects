@@ -35,7 +35,6 @@ public class BehaviorTree : MonoBehaviour
     public GameObject Daniel;
 	public GameObject Tom;
 	public GameObject Harry;
-	public GameObject Virtual_human;
 
 	/*
 	public Transform Chris_hand;
@@ -49,12 +48,10 @@ public class BehaviorTree : MonoBehaviour
 	public Transform Harry_waist;
     */
 
-	public GameObject Virtual_point;
-
-	public GameObject First_point;
-	public GameObject Second_point;
-	public GameObject Third_point;
-	public GameObject Fourth_point;
+	public GameObject linePoint1;
+	public GameObject linePoint2;
+	public GameObject linePoint3;
+	public GameObject linePoint4;
 
     public GameObject trainPoint1;
 	public GameObject trainPoint2;
@@ -67,8 +64,6 @@ public class BehaviorTree : MonoBehaviour
     public StoryStatus story_status;
     public StoryStatus previous_status;
     public InputStatus input;
-
-    public bool meet_one_point;
 
     void Start()
     {
@@ -141,44 +136,6 @@ public class BehaviorTree : MonoBehaviour
         }
     }
 
-	/*
-    protected Node ST_Chat(GameObject participants)
-    {
-        //return new Sequence(participants.GetComponent<BehaviorMecanim>().Node_BodyAnimation("ADAPTMan@shaking_head_no", true), new LeafWait(1000));
-        // Val<string> gesture = Val.V (() => "ADAPTMan@shaking_head_no");
-        // Val<long> duration = Val.V (() => 1000L);
-        Val<Vector3> target = Val.V (() => new Vector3(0, 0, 0));
-
-        // return new DecoratorLoop(new SequenceShuffle(participants.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture(gesture, duration), new LeafWait(1000)));
-        // return new SequenceShuffle(participants.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture(gesture, duration), new LeafWait(1000));
-        return new SequenceShuffle(participants.GetComponent<BehaviorMecanim>().ST_TurnToFace(target));
-    }
-
-    protected Node ST_story_one()
-    {
-        Node walkToMeetingPoint = new SequenceParallel(
-            ST_ApproachAndWait(Chris, meetingPointChar1),
-			ST_ApproachAndWait(Daniel, meetingPointChar2),
-            );
-
-        if (walkToMeetingPoint.LastStatus == RunStatus.Running)
-            meet_one_point = true;
-
-        return new SelectorParallel(new Sequence(walkToMeetingPoint), new LeafWait(10000));
-    }
-
-    protected Node ST_story_two()
-    {
-        Node walkToMeetingPoint = new SequenceParallel(
-            ST_ApproachAndWait(Char1, meetingPointChar1),
-            ST_ApproachAndWait(Char2, meetingPointChar2),
-            ST_ApproachAndWait(Char3, meetingPointChar3),
-            ST_ApproachAndWait(Char4, meetingPointChar4));
-
-        return new SelectorParallel(new Sequence(walkToMeetingPoint), new LeafWait(10000));
-    }
-    */
-
     protected Node ST_ApproachAndWait(GameObject player, Transform target)
     {
         Val<Vector3> position = Val.V (() => target.position);
@@ -250,7 +207,7 @@ public class BehaviorTree : MonoBehaviour
             new SequenceParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point2), ST_others_follow(Tom)),
             new SequenceParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point3), ST_others_follow(Tom)),
             new SequenceParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point4), ST_others_follow(Tom)),
-            new SequenceParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point5), ST_others_follow(Tom))));
+            new SequenceParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point5), ST_others_follow(Tom)));
     }
 
 	protected Node BuildTreeRoot()
@@ -274,18 +231,12 @@ public class BehaviorTree : MonoBehaviour
             this.ST_SAY_Hello(this.Daniel));
 
 		Node make_line = new Sequence(
-            this.ST_make_line(this.Tom, this.First_point),
-            this.ST_make_line(this.Chris,this.Second_point),
-            this.ST_make_line(this.Harry, this.Third_point),
-            this.ST_make_line(this.Daniel, this.Fourth_point));
+            this.ST_make_line(this.Tom, this.linePoint1),
+            this.ST_make_line(this.Chris,this.linePoint2),
+            this.ST_make_line(this.Harry, this.linePoint3),
+            this.ST_make_line(this.Daniel, this.linePoint4));
 
-		Node make_train = new Sequence(
-            this.ST_make_Train(this.Tom, this.Virtual_human),
-            this.ST_make_Train(this.Chris, this.Tom),
-            this.ST_make_Train(this.Harry, this.Chris),
-            this.ST_make_Train(this.Daniel, this.Harry));
-
-		Node train_play = new DecoratorLoop(new Sequence(meet_one_point, say_hi, make_line, make_train));
+		Node train_play = new DecoratorLoop(new Sequence(meet_one_point, say_hi, make_line, ST_make_Train()));
 		Node trigger = new DecoratorLoop(new LeafAssert(trainStory));
 		Node root_story = new DecoratorLoop(new DecoratorForceStatus(RunStatus.Success, new SequenceParallel(trigger, train_play)));
 
