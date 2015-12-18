@@ -246,16 +246,11 @@ public class BehaviorTree : MonoBehaviour
         Val<Vector3> point5 = Val.V (() => trainPoint5.transform.position);
 
 		return new Sequence(
-            Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point1),
-            ST_others_follow(Tom),
-            Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point2),
-            ST_others_follow(Tom),
-            Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point3),
-            ST_others_follow(Tom),
-            Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point4),
-            ST_others_follow(Tom),
-            Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point5),
-            ST_others_follow(Tom));
+            new SequenceParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point1), ST_others_follow(Tom)),
+            new SequenceParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point2), ST_others_follow(Tom)),
+            new SequenceParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point3), ST_others_follow(Tom)),
+            new SequenceParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point4), ST_others_follow(Tom)),
+            new SequenceParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point5), ST_others_follow(Tom))));
     }
 
 	protected Node BuildTreeRoot()
