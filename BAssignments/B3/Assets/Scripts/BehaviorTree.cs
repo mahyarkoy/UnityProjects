@@ -202,12 +202,14 @@ public class BehaviorTree : MonoBehaviour
         Val<Vector3> point4 = Val.V (() => trainPoint4.transform.position);
         Val<Vector3> point5 = Val.V (() => trainPoint5.transform.position);
 
+        Val<float> dist = Val.V (() => 1.0f);
+
 		return new Sequence(
-            new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point1), ST_others_follow(Tom)),
-            new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point2), ST_others_follow(Tom)),
-            new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point3), ST_others_follow(Tom)),
-            new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point4), ST_others_follow(Tom)),
-            new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point5), ST_others_follow(Tom)));
+            new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(point1, dist), ST_others_follow(Tom)),
+            new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(point2, dist), ST_others_follow(Tom)),
+            new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(point3, dist), ST_others_follow(Tom)),
+            new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(point4, dist), ST_others_follow(Tom)),
+            new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(point5, dist), ST_others_follow(Tom)));
     }
 
 	protected Node BuildTreeRoot()
