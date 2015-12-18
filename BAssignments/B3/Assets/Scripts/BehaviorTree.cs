@@ -60,6 +60,11 @@ public class BehaviorTree : MonoBehaviour
 	public GameObject trainPoint5;
 
     private BehaviorAgent behaviorAgent;
+	private Func<bool> trainStory = () => true;
+	private Func<bool> carStory = () => false;
+	private Func<bool> momStory = () => false;
+	private Func<bool> butterflyStory = () => false;
+	private Func<bool> fallstory = ()=> false;
 
     public StoryStatus story_status;
     public StoryStatus previous_status;
@@ -67,6 +72,12 @@ public class BehaviorTree : MonoBehaviour
 
     void Start()
     {
+		trainStory = () => true;
+		carStory = () => false;
+		momStory = () => false;
+		butterflyStory = () => false;
+		fallstory = ()=> false;
+
         story_status    = StoryStatus.Meeting;
         previous_status = StoryStatus.Meeting;
 
@@ -79,12 +90,14 @@ public class BehaviorTree : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey("up"))
-            input = InputStatus.Butterfly;
-        else if (Input.GetKey("down"))
-            input = InputStatus.Mom;
-        else if (Input.GetKey("left"))
-            input = InputStatus.Fall;
+		if (Input.GetKey ("up"))
+			input = InputStatus.Butterfly;
+		else if (Input.GetKey ("down"))
+			input = InputStatus.Mom;
+		else if (Input.GetKey ("left")) {
+			print (" are you left");
+			input = InputStatus.Fall;
+		}
         else if (Input.GetKey("right"))
             input = InputStatus.Car;
         else
@@ -92,17 +105,33 @@ public class BehaviorTree : MonoBehaviour
 
         switch (story_status)
         {
-            case StoryStatus.Meeting:
+		case StoryStatus.Meeting:
                 story_status = StoryStatus.Train;
+			    trainStory = () => true;
+
                 break;
 
-            case StoryStatus.Train:
-                if (input == InputStatus.Butterfly)
-                    story_status = StoryStatus.Butterfly;
-                else if (input == InputStatus.Mom)
-                    story_status = StoryStatus.Mom;
-                else if (input == InputStatus.Fall)
-                    story_status = StoryStatus.Fall;
+		case StoryStatus.Train:
+			print (input);
+			if (input == InputStatus.Butterfly) {
+				story_status = StoryStatus.Butterfly;
+				trainStory = () => false;
+				carStory = () => false;
+				momStory = () => false;
+				butterflyStory = () => true;
+
+			} else if (input == InputStatus.Mom)
+				story_status = StoryStatus.Mom;
+			  else if (input == InputStatus.Fall) {
+				print (" are you fall down");
+				trainStory = () => false;
+				carStory = () => false;
+				momStory = () => false;
+				butterflyStory = () => false;
+				fallstory = ()=> true;
+
+				story_status = StoryStatus.Fall;
+			}
                 else if (input == InputStatus.Car)
                     story_status = StoryStatus.Car;
                 break;
@@ -212,14 +241,18 @@ public class BehaviorTree : MonoBehaviour
             new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(point4, dist), ST_others_follow(Tom)),
             new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(point5, dist), ST_others_follow(Tom))));
     }
-
+	protected Node ST_Fall_Down(GameObject player)
+	{
+		Val<string> fall_down =Val.V (()=> "FALL_DOWN");
+		Val<bool> set_active = Val.V(()=>true);
+		return new Sequence(
+			player.GetComponent<BehaviorMecanim>().Node_HandAnimation(fall_down, set_active),
+			new LeafWait(1000));
+	}
 	protected Node BuildTreeRoot()
 	{
         // TODO: story state is not yet implemented
-		Func<bool> trainStory = () => true;
-		Func<bool> carStory = () => false;
-		Func<bool> momStory = () => false;
-		Func<bool> butterflyStory = () => false;
+	
 
 		Node meet_one_point = new SequenceParallel(
             this.ST_Meet_Wait(this.Tom, this.meetingPointChar1, 2),
@@ -239,9 +272,16 @@ public class BehaviorTree : MonoBehaviour
             this.ST_make_line(this.Harry, this.linePoint3),
             this.ST_make_line(this.Daniel, this.linePoint4));
 
+		Node fall_down = this.ST_Fall_Down(this.Tom); //randomly chooose any one of the character.
+
 		Node train_play = new DecoratorLoop(new Sequence(meet_one_point, say_hi, make_line, ST_make_Train()));
-		Node trigger = new DecoratorLoop(new LeafAssert(trainStory));
-		Node root_story = new DecoratorLoop(new DecoratorForceStatus(RunStatus.Success, new SequenceParallel(trigger, train_play)));
+		Node Fall_story = new DecoratorLoop(new Sequence(fall_down));
+		Node trigger_train = new DecoratorLoop(new LeafAssert(trainStory));
+		Node trigger_fall = new DecoratorLoop(new LeafAssert(fallstory));
+
+		Node train_story_arc = new  SelectorParallel(trigger_train, train_play);
+		Node fall_story_arc = new  SelectorParallel(trigger_fall, Fall_story);
+		Node root_story = new DecoratorLoop(new DecoratorForceStatus(RunStatus.Success, new Sequence(train_story_arc, fall_story_arc)));
 
 		return root_story;
 	}
