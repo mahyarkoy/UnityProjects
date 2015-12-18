@@ -183,8 +183,8 @@ public class BehaviorTree : MonoBehaviour
 
 	protected Node ST_SAY_Hello(GameObject player)
 	{
-		print (" who ar you ");
-		Val<string> hello_animation =Val.V (()=> "SAY_HELLO");
+		
+		Val<string> hello_animation =Val.V (()=> "WAVE");
 		Val<bool> set_active = Val.V(()=>true);
 		Node say_hi = new Sequence(player.GetComponent<BehaviorMecanim>().Node_HandAnimation(hello_animation,set_active), new LeafWait(1000));
 				return say_hi;
