@@ -201,16 +201,6 @@ public class BehaviorTree : MonoBehaviour
             new LeafWait(1000));
 	}
 
-	/*
-	protected Node ST_make_line(GameObject player, GameObject go_position)
-	{
-
-		Val<Vector3> front_point = Val.V (() => go_position.transform.position);
-		Node line = new Sequence (player.GetComponent<BehaviorMecanim>().Node_GoTo(front_point),new LeafWait(1000));
-		return line;
-	}
-    */
-
 	protected Node ST_SAY_Hello(GameObject player)
 	{
 		Val<string> hello_animation =Val.V (()=> "WAVE");
@@ -232,7 +222,11 @@ public class BehaviorTree : MonoBehaviour
 
 	protected Node BuildTreeRoot()
 	{
-		Func<bool> story1 = () => true; // we have not implemented state of story.
+        // TODO: story state is not yet implemented
+		Func<bool> trainStory = () => true;
+		Func<bool> carStory = () => false;
+		Func<bool> momStory = () => false;
+		Func<bool> butterflyStory = () => false;
 
 		Node meet_one_point = new SequenceParallel(
             this.ST_Meet_Wait(this.Tom, this.meetingPointChar1, 2),
@@ -259,7 +253,7 @@ public class BehaviorTree : MonoBehaviour
             this.ST_make_Train(this.Daniel, this.Harry));
 
 		Node train_play = new DecoratorLoop(new Sequence(meet_one_point, say_hi, make_line, make_train));
-		Node trigger = new DecoratorLoop(new LeafAssert(story1));
+		Node trigger = new DecoratorLoop(new LeafAssert(trainStory));
 		Node root_story = new DecoratorLoop(new DecoratorForceStatus(RunStatus.Success, new SequenceParallel(trigger, train_play)));
 
 		return root_story;
