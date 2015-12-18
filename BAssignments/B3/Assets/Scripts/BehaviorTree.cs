@@ -50,10 +50,17 @@ public class BehaviorTree : MonoBehaviour
     */
 
 	public GameObject Virtual_point;
+
 	public GameObject First_point;
 	public GameObject Second_point;
 	public GameObject Third_point;
 	public GameObject Fourth_point;
+
+    public GameObject trainPoint1;
+	public GameObject trainPoint2;
+	public GameObject trainPoint3;
+	public GameObject trainPoint4;
+	public GameObject trainPoint5;
 
     private BehaviorAgent behaviorAgent;
 
