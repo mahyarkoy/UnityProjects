@@ -30,16 +30,12 @@ public enum InputStatus
 public class BehaviorTree : MonoBehaviour
 {
 	public GameObject  meetingPointChar1;
-	//GameObject meetingPointChar2;
-    //public Transform meetingPointChar3;
-    //public Transform meetingPointChar4;
 
     public GameObject Chris;
     public GameObject Daniel;
 	public GameObject Tom;
 	public GameObject Harry;
 	public GameObject Virtual_human;
-
 
 	/*
 	public Transform Chris_hand;
@@ -50,16 +46,14 @@ public class BehaviorTree : MonoBehaviour
 	public Transform Chris_waist;
 	public Transform Daniel_waist;
 	public Transform Tom_waist;
-	public Transform Harry_waist;*/
-
-
+	public Transform Harry_waist;
+    */
 
 	public GameObject Virtual_point;
 	public GameObject First_point;
 	public GameObject Second_point;
 	public GameObject Third_point;
 	public GameObject Fourth_point;
-
 
     private BehaviorAgent behaviorAgent;
 
@@ -145,6 +139,7 @@ public class BehaviorTree : MonoBehaviour
         Val<Vector3> position = Val.V (() => target.position);
         return new Sequence(participants.GetComponent<BehaviorMecanim>().Node_GoTo(position), new LeafWait(1000));
     }
+
 	/*
     protected Node ST_Appraoch_at_certain_raidusAndWait(GameObject participants, Transform target, float radius)
     {
@@ -188,27 +183,35 @@ public class BehaviorTree : MonoBehaviour
             ST_ApproachAndWait(Char4, meetingPointChar4));
 
         return new SelectorParallel(new Sequence(walkToMeetingPoint), new LeafWait(10000));
-    }*/
+    }
+    */
 
 	protected Node ST_ApproachAndWait(GameObject player, GameObject meet_position)
     {
         Val<Vector3> position = Val.V (() => meet_position.transform.position);
-        return new Sequence( player.GetComponent<BehaviorMecanim>().Node_GoTo(position), new LeafWait(1000));
+        return new Sequence(
+            player.GetComponent<BehaviorMecanim>().Node_GoTo(position),
+            new LeafWait(1000));
     }
+
     protected Node ST_Meet_Wait(GameObject player, GameObject meet_position,int dist)
     {
         Val<Vector3> meet_point = Val.V (() => meet_position.transform.position);
-		Node meet_to_one = new Sequence(player.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(meet_point,dist),new LeafWait(1000));
+		Node meet_to_one = new Sequence(
+            player.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(meet_point, dist),
+            new LeafWait(1000));
         return meet_to_one;
     }
 
 	protected Node ST_make_line(GameObject player, GameObject go_postion)
 	{
 		Val<Vector3> point = Val.V(()=>go_postion.transform.position);
-		Node line = new Sequence (player.GetComponent<BehaviorMecanim>().Node_GoTo(point),new LeafWait(1000));
+		Node line = new Sequence(
+            player.GetComponent<BehaviorMecanim>().Node_GoTo(point),
+            new LeafWait(1000));
 		return line;
 	}
-	
+
 	/*
 	protected Node ST_make_line(GameObject player, GameObject go_position)
 	{
@@ -216,61 +219,60 @@ public class BehaviorTree : MonoBehaviour
 		Val<Vector3> front_point = Val.V (() => go_position.transform.position);
 		Node line = new Sequence (player.GetComponent<BehaviorMecanim>().Node_GoTo(front_point),new LeafWait(1000));
 		return line;
+	}
+    */
 
-
-
-	}*/
 	protected Node ST_SAY_Hello(GameObject player)
 	{
-		
 		Val<string> hello_animation =Val.V (()=> "WAVE");
 		Val<bool> set_active = Val.V(()=>true);
-		Node say_hi = new Sequence(player.GetComponent<BehaviorMecanim>().Node_HandAnimation(hello_animation,set_active), new LeafWait(1000));
-				return say_hi;
+		Node say_hi = new Sequence(
+            player.GetComponent<BehaviorMecanim>().Node_HandAnimation(hello_animation, set_active),
+            new LeafWait(1000));
+        return say_hi;
 	}
 
 	protected Node ST_make_Train(GameObject player_back,GameObject player_front) //back effector //front object. //back is object
 	{
 		Val<FullBodyBipedEffector> effector = Val.V (() => player_back.GetComponent<FullBodyBipedEffector>());
 		Val<InteractionObject> waist = Val.V (() => player_front.GetComponent<InteractionObject>());
-		Node make_train = new Sequence (player_back.GetComponent<BehaviorMecanim>().Node_StartInteraction (effector, waist),new LeafWait(1000));
+		Node make_train = new Sequence(
+            player_back.GetComponent<BehaviorMecanim>().Node_StartInteraction(effector, waist),
+            new LeafWait(1000));
 		return make_train;
 	}
 
-    
-	protected Node BuildTreeRoot() 
+	protected Node BuildTreeRoot()
 	{
-		
-
-
 		Func<bool> story1  = () => true; // we have not implemented state of story.
 
-		Node meet_one_point = new SequenceParallel(this.ST_Meet_Wait(this.Tom,this.meetingPointChar1,2),this.ST_Meet_Wait(this.Chris,this.meetingPointChar1,2),this.ST_Meet_Wait(this.Harry,this.meetingPointChar1,2),this.ST_Meet_Wait(this.Daniel,this.meetingPointChar1,2));
-		Node say_hi = new SequenceParallel(this.ST_SAY_Hello(this.Tom),this.ST_SAY_Hello(this.Daniel),this.ST_SAY_Hello(this.Chris),this.ST_SAY_Hello(this.Harry));
+		Node meet_one_point = new SequenceParallel(
+            this.ST_Meet_Wait(this.Tom, this.meetingPointChar1, 2),
+            this.ST_Meet_Wait(this.Chris, this.meetingPointChar1, 2),
+            this.ST_Meet_Wait(this.Harry, this.meetingPointChar1, 2),
+            this.ST_Meet_Wait(this.Daniel, this.meetingPointChar1, 2));
+		Node say_hi = new SequenceParallel(
+            this.ST_SAY_Hello(this.Tom),
+            this.ST_SAY_Hello(this.Daniel),
+            this.ST_SAY_Hello(this.Chris),
+            this.ST_SAY_Hello(this.Harry));
 
-		Node make_line = new Sequence (
-				this.ST_make_line (this.Tom, this.First_point),
-				this.ST_make_line (this.Chris,this.Second_point),
-				this.ST_make_line (this.Harry, this.Third_point),
-				this.ST_make_line (this.Daniel, this.Fourth_point));
-		
-		Node make_train = new Sequence (this.ST_make_Train (this.Tom, this.Virtual_human),
-			                  this.ST_make_Train (this.Chris, this.Tom),
-			                  this.ST_make_Train (this.Harry, this.Chris),
-			                  this.ST_make_Train (this.Daniel, this.Harry));
-						
-					
-		Node train_play  = new DecoratorLoop (
-			
-			new Sequence(meet_one_point,say_hi,make_line));
-		Node trigger = new DecoratorLoop (new LeafAssert (story1));
-		Node root_story = new DecoratorLoop (new DecoratorForceStatus (RunStatus.Success, new SequenceParallel(trigger,train_play)));
+		Node make_line = new Sequence(
+            this.ST_make_line(this.Tom, this.First_point),
+            this.ST_make_line(this.Chris,this.Second_point),
+            this.ST_make_line(this.Harry, this.Third_point),
+            this.ST_make_line(this.Daniel, this.Fourth_point));
+
+		Node make_train = new Sequence(
+            this.ST_make_Train(this.Tom, this.Virtual_human),
+            this.ST_make_Train(this.Chris, this.Tom),
+            this.ST_make_Train(this.Harry, this.Chris),
+            this.ST_make_Train(this.Daniel, this.Harry));
+
+		Node train_play = new DecoratorLoop(new Sequence(meet_one_point,say_hi,make_line));
+		Node trigger = new DecoratorLoop(new LeafAssert (story1));
+		Node root_story = new DecoratorLoop(new DecoratorForceStatus(RunStatus.Success, new SequenceParallel(trigger, train_play)));
 
 		return root_story;
-
 	}
 }
-
-
-				
-
