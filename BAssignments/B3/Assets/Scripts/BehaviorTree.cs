@@ -134,21 +134,7 @@ public class BehaviorTree : MonoBehaviour
         }
     }
 
-    protected Node ST_ApproachAndWait(GameObject participants, Transform target)
-    {
-        Val<Vector3> position = Val.V (() => target.position);
-        return new Sequence(participants.GetComponent<BehaviorMecanim>().Node_GoTo(position), new LeafWait(1000));
-    }
-
 	/*
-    protected Node ST_Appraoch_at_certain_raidusAndWait(GameObject participants, Transform target, float radius)
-    {
-        Val<Vector3> position = Val.V (() => target.position);
-        Val<float> dist=Val.V (()=>radius );
-
-        return new Sequence(participants.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(position,dist), new LeafWait(1000));
-    }
-
     protected Node ST_Chat(GameObject participants)
     {
         //return new Sequence(participants.GetComponent<BehaviorMecanim>().Node_BodyAnimation("ADAPTMan@shaking_head_no", true), new LeafWait(1000));
@@ -186,30 +172,33 @@ public class BehaviorTree : MonoBehaviour
     }
     */
 
-	protected Node ST_ApproachAndWait(GameObject player, GameObject meet_position)
+    protected Node ST_ApproachAndWait(GameObject player, Transform target)
     {
-        Val<Vector3> position = Val.V (() => meet_position.transform.position);
+        Val<Vector3> position = Val.V (() => target.position);
         return new Sequence(
             player.GetComponent<BehaviorMecanim>().Node_GoTo(position),
             new LeafWait(1000));
     }
 
+	protected Node ST_ApproachAndWait(GameObject player, GameObject destination)
+    {
+        return ST_ApproachAndWait(player, destination.transform);
+    }
+
     protected Node ST_Meet_Wait(GameObject player, GameObject meet_position,int dist)
     {
         Val<Vector3> meet_point = Val.V (() => meet_position.transform.position);
-		Node meet_to_one = new Sequence(
+        return new Sequence(
             player.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(meet_point, dist),
             new LeafWait(1000));
-        return meet_to_one;
     }
 
 	protected Node ST_make_line(GameObject player, GameObject go_postion)
 	{
 		Val<Vector3> point = Val.V(()=>go_postion.transform.position);
-		Node line = new Sequence(
+        return new Sequence(
             player.GetComponent<BehaviorMecanim>().Node_GoTo(point),
             new LeafWait(1000));
-		return line;
 	}
 
 	/*
@@ -226,36 +215,36 @@ public class BehaviorTree : MonoBehaviour
 	{
 		Val<string> hello_animation =Val.V (()=> "WAVE");
 		Val<bool> set_active = Val.V(()=>true);
-		Node say_hi = new Sequence(
+		return new Sequence(
             player.GetComponent<BehaviorMecanim>().Node_HandAnimation(hello_animation, set_active),
             new LeafWait(1000));
-        return say_hi;
 	}
 
-	protected Node ST_make_Train(GameObject player_back,GameObject player_front) //back effector //front object. //back is object
+	protected Node ST_make_Train(GameObject player_back, GameObject player_front) //back effector //front object. //back is object
 	{
 		Val<FullBodyBipedEffector> effector = Val.V (() => player_back.GetComponent<FullBodyBipedEffector>());
 		Val<InteractionObject> waist = Val.V (() => player_front.GetComponent<InteractionObject>());
-		Node make_train = new Sequence(
+
+		return new Sequence(
             player_back.GetComponent<BehaviorMecanim>().Node_StartInteraction(effector, waist),
             new LeafWait(1000));
-		return make_train;
 	}
 
 	protected Node BuildTreeRoot()
 	{
-		Func<bool> story1  = () => true; // we have not implemented state of story.
+		Func<bool> story1 = () => true; // we have not implemented state of story.
 
 		Node meet_one_point = new SequenceParallel(
             this.ST_Meet_Wait(this.Tom, this.meetingPointChar1, 2),
             this.ST_Meet_Wait(this.Chris, this.meetingPointChar1, 2),
             this.ST_Meet_Wait(this.Harry, this.meetingPointChar1, 2),
             this.ST_Meet_Wait(this.Daniel, this.meetingPointChar1, 2));
+
 		Node say_hi = new SequenceParallel(
             this.ST_SAY_Hello(this.Tom),
-            this.ST_SAY_Hello(this.Daniel),
             this.ST_SAY_Hello(this.Chris),
-            this.ST_SAY_Hello(this.Harry));
+            this.ST_SAY_Hello(this.Harry),
+            this.ST_SAY_Hello(this.Daniel));
 
 		Node make_line = new Sequence(
             this.ST_make_line(this.Tom, this.First_point),
@@ -269,8 +258,8 @@ public class BehaviorTree : MonoBehaviour
             this.ST_make_Train(this.Harry, this.Chris),
             this.ST_make_Train(this.Daniel, this.Harry));
 
-		Node train_play = new DecoratorLoop(new Sequence(meet_one_point,say_hi,make_line));
-		Node trigger = new DecoratorLoop(new LeafAssert (story1));
+		Node train_play = new DecoratorLoop(new Sequence(meet_one_point, say_hi, make_line, make_train));
+		Node trigger = new DecoratorLoop(new LeafAssert(story1));
 		Node root_story = new DecoratorLoop(new DecoratorForceStatus(RunStatus.Success, new SequenceParallel(trigger, train_play)));
 
 		return root_story;
