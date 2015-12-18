@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using TreeSharpPlus;
+using RootMotion.FinalIK;
 
 public enum StoryStatus //story state according to the input status.
 {
@@ -37,8 +38,28 @@ public class BehaviorTree : MonoBehaviour
     public GameObject Daniel;
 	public GameObject Tom;
 	public GameObject Harry;
-   //public GameObject Char3;
-    //public GameObject Char4;
+	public GameObject Virtual_human;
+
+
+	/*
+	public Transform Chris_hand;
+	public Transform Daniel_hand;
+	public Transform Tom_hand;
+	public Transform Harry_hand;
+
+	public Transform Chris_waist;
+	public Transform Daniel_waist;
+	public Transform Tom_waist;
+	public Transform Harry_waist;*/
+
+
+
+	public GameObject Virtual_point;
+	public GameObject First_point;
+	public GameObject Second_point;
+	public GameObject Third_point;
+	public GameObject Fourth_point;
+
 
     private BehaviorAgent behaviorAgent;
 
@@ -181,6 +202,24 @@ public class BehaviorTree : MonoBehaviour
         return meet_to_one;
     }
 
+	protected Node ST_make_line(GameObject player, GameObject go_postion)
+	{
+		Val<Vector3> point = Val.V(()=>go_postion.transform.position);
+		Node line = new Sequence (player.GetComponent<BehaviorMecanim>().Node_GoTo(point),new LeafWait(1000));
+		return line;
+	}
+	
+	/*
+	protected Node ST_make_line(GameObject player, GameObject go_position)
+	{
+
+		Val<Vector3> front_point = Val.V (() => go_position.transform.position);
+		Node line = new Sequence (player.GetComponent<BehaviorMecanim>().Node_GoTo(front_point),new LeafWait(1000));
+		return line;
+
+
+
+	}*/
 	protected Node ST_SAY_Hello(GameObject player)
 	{
 		
@@ -190,18 +229,40 @@ public class BehaviorTree : MonoBehaviour
 				return say_hi;
 	}
 
+	protected Node ST_make_Train(GameObject player_back,GameObject player_front) //back effector //front object. //back is object
+	{
+		Val<FullBodyBipedEffector> effector = Val.V (() => player_back.GetComponent<FullBodyBipedEffector>());
+		Val<InteractionObject> waist = Val.V (() => player_front.GetComponent<InteractionObject>());
+		Node make_train = new Sequence (player_back.GetComponent<BehaviorMecanim>().Node_StartInteraction (effector, waist),new LeafWait(1000));
+		return make_train;
+	}
+
     
 	protected Node BuildTreeRoot() 
 	{
+		
+
 
 		Func<bool> story1  = () => true; // we have not implemented state of story.
 
 		Node meet_one_point = new SequenceParallel(this.ST_Meet_Wait(this.Tom,this.meetingPointChar1,2),this.ST_Meet_Wait(this.Chris,this.meetingPointChar1,2),this.ST_Meet_Wait(this.Harry,this.meetingPointChar1,2),this.ST_Meet_Wait(this.Daniel,this.meetingPointChar1,2));
-					Node say_hi = new DecoratorLoop( new SequenceParallel(this.ST_SAY_Hello(this.Tom),this.ST_SAY_Hello(this.Daniel),this.ST_SAY_Hello(this.Chris),this.ST_SAY_Hello(this.Harry)));
-	
-		Node train_play  = new DecoratorLoop (
+		Node say_hi = new SequenceParallel(this.ST_SAY_Hello(this.Tom),this.ST_SAY_Hello(this.Daniel),this.ST_SAY_Hello(this.Chris),this.ST_SAY_Hello(this.Harry));
 
-			new Sequence(meet_one_point,say_hi));
+		Node make_line = new Sequence (
+				this.ST_make_line (this.Tom, this.First_point),
+				this.ST_make_line (this.Chris,this.Second_point),
+				this.ST_make_line (this.Harry, this.Third_point),
+				this.ST_make_line (this.Daniel, this.Fourth_point));
+		
+		Node make_train = new Sequence (this.ST_make_Train (this.Tom, this.Virtual_human),
+			                  this.ST_make_Train (this.Chris, this.Tom),
+			                  this.ST_make_Train (this.Harry, this.Chris),
+			                  this.ST_make_Train (this.Daniel, this.Harry));
+						
+					
+		Node train_play  = new DecoratorLoop (
+			
+			new Sequence(meet_one_point,say_hi,make_line));
 		Node trigger = new DecoratorLoop (new LeafAssert (story1));
 		Node root_story = new DecoratorLoop (new DecoratorForceStatus (RunStatus.Success, new SequenceParallel(trigger,train_play)));
 
@@ -211,4 +272,5 @@ public class BehaviorTree : MonoBehaviour
 }
 
 
-					
+				
+

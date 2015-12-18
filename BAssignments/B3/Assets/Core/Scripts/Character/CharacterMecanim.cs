@@ -118,6 +118,7 @@ public class CharacterMecanim : MonoBehaviour
     {
         if (this.Body.NavCanReach(target.Value) == false)
         {
+			print (" is this point is not reachable");
             Debug.LogWarning("NavGoTo failed -- can't reach target");
             return RunStatus.Failure;
         }
@@ -130,9 +131,13 @@ public class CharacterMecanim : MonoBehaviour
         this.Body.NavGoTo(target.Value);
         if (this.Body.NavHasArrived() == true)
         {
+
+			print (" are you arrive");
             this.Body.NavStop();
             return RunStatus.Success;
+
         }
+		print (" are you are not arriave");
         return RunStatus.Running;
         // TODO: Timeout? - AS
     }
