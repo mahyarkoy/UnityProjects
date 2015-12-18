@@ -160,9 +160,10 @@ public class BehaviorTree : MonoBehaviour
 	protected Node ST_make_line(GameObject player, GameObject go_postion)
 	{
 		Val<Vector3> point = Val.V(()=>go_postion.transform.position);
+        Val<float> dist = Val.V (() => 0.5f);
         return new Sequence(
-            player.GetComponent<BehaviorMecanim>().Node_GoTo(point),
-            new LeafWait(1000));
+            player.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(point, dist),
+            new LeafWait(100));
 	}
 
 	protected Node ST_SAY_Hello(GameObject player)
