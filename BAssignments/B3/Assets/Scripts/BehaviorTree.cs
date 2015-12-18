@@ -204,12 +204,12 @@ public class BehaviorTree : MonoBehaviour
 
         Val<float> dist = Val.V (() => 1.0f);
 
-		return new Sequence(
+		return new DecoratorLoop(new Sequence(
             new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(point1, dist), ST_others_follow(Tom)),
             new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(point2, dist), ST_others_follow(Tom)),
             new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(point3, dist), ST_others_follow(Tom)),
             new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(point4, dist), ST_others_follow(Tom)),
-            new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(point5, dist), ST_others_follow(Tom)));
+            new SelectorParallel(Tom.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(point5, dist), ST_others_follow(Tom))));
     }
 
 	protected Node BuildTreeRoot()
