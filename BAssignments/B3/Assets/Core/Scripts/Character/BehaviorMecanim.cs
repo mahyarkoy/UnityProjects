@@ -15,13 +15,14 @@ public enum AnimationLayer
 public class BehaviorMecanim : MonoBehaviour
 {
     [HideInInspector]
-    public CharacterMecanim Character = null;
+    public CharacterMecanim Character =null;
 
     void Awake() { this.Initialize(); }
 
     protected void Initialize()
     {
         this.Character = this.GetComponent<CharacterMecanim>();
+		//print (" hmm");
     }
 
     protected void StartTree(
@@ -198,7 +199,7 @@ public class BehaviorMecanim : MonoBehaviour
     /// </summary>
     public Node Node_HandAnimation(Val<string> gestureName, Val<bool> start)
     {
-
+		print ("who are you 2");
         return new LeafInvoke(
             () => this.Character.HandAnimation(gestureName, start),
             () => this.Character.HandAnimation(gestureName, false));

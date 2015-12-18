@@ -213,8 +213,8 @@ public class BodyMecanim : MonoBehaviour
     public void HandAnimation(string gestureName, bool isActive)
     {
 
-        if (isActive == true)
-            this.ResetAnimation();
+        /*if (isActive == true)
+            this.ResetAnimation();*/
         this.animator.SetBool("HandAnimation", isActive);
 
         // Layout 1: "Hand Animation Layer". Weight needed in order to 
@@ -228,7 +228,8 @@ public class BodyMecanim : MonoBehaviour
         {
             resettingHandLayerWeight = true;
         }
-
+		print (gestureName);
+			
         switch (gestureName.ToUpper())
         {
             case "APPLEPICK": 
@@ -349,6 +350,10 @@ public class BodyMecanim : MonoBehaviour
             case "WRITING":
                 this.animator.SetBool("H_Writing", isActive);
                 break;
+		case "SAY_HELLO":
+			this.animator.SetBool ("B_Say_Hi", isActive);
+			print(isActive);
+			break;
         }
     }
 

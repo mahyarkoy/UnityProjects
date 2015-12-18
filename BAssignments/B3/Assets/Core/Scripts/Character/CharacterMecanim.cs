@@ -286,6 +286,7 @@ public class CharacterMecanim : MonoBehaviour
 	public virtual RunStatus HandAnimation(
         Val<string> gestureName, Val<bool> isActive)
     {
+		print (" who are you3 ");
         this.Body.HandAnimation(gestureName.Value, isActive.Value);
 		return RunStatus.Success;
 	}
