@@ -227,6 +227,37 @@ public class BehaviorTree : MonoBehaviour
             new LeafWait(1000));
 	}
 
+	protected Node ST_others_follow(GameObject target)
+    {
+        Val<Vector3> destination = Val.V (() => target.transform.position);
+
+		return new SequenceParallel(
+            new DecoratorLoop(Chris.GetComponent<BehaviorMecanim>().Node_GoTo(destination)),
+            new DecoratorLoop(Harry.GetComponent<BehaviorMecanim>().Node_GoTo(destination)),
+            new DecoratorLoop(Daniel.GetComponent<BehaviorMecanim>().Node_GoTo(destination)));
+    }
+
+	protected Node ST_make_Train()
+    {
+        Val<Vector3> point1 = Val.V (() => trainPoint1.transform.position);
+        Val<Vector3> point2 = Val.V (() => trainPoint2.transform.position);
+        Val<Vector3> point3 = Val.V (() => trainPoint3.transform.position);
+        Val<Vector3> point4 = Val.V (() => trainPoint4.transform.position);
+        Val<Vector3> point5 = Val.V (() => trainPoint5.transform.position);
+
+		return new Sequence(
+            Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point1),
+            ST_others_follow(Tom),
+            Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point2),
+            ST_others_follow(Tom),
+            Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point3),
+            ST_others_follow(Tom),
+            Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point4),
+            ST_others_follow(Tom),
+            Tom.GetComponent<BehaviorMecanim>().Node_GoTo(point5),
+            ST_others_follow(Tom));
+    }
+
 	protected Node BuildTreeRoot()
 	{
         // TODO: story state is not yet implemented
