@@ -5,6 +5,13 @@ public class MouseUI : MonoBehaviour
 {
     public Camera camera;
 
+    public GameObject Chris;
+    public GameObject Daniel;
+	public GameObject Tom;
+	public GameObject Harry;
+
+	public GameObject SelectorIndicator;
+
 	void Start()
     {
     }
@@ -14,19 +21,26 @@ public class MouseUI : MonoBehaviour
         RaycastHit hit;
 
         if (Input.GetMouseButtonDown(0)) {
-            if (Physics.Raycast(camera.ScreenPointToRay(Input.mousePosition), out hit, 100)) {
+            if (Physics.Raycast(camera.ScreenPointToRay(Input.mousePosition), out hit, 10000)) {
                 switch (hit.transform.gameObject.tag) {
                     case "Daniel":
-                        print("Daniel selected");
+                        SelectorIndicator.transform.parent = Daniel.transform;
+                        SelectorIndicator.active = true;
                         break;
                     case "Chris":
-                        print("Chris selected");
+                        SelectorIndicator.transform.parent = Chris.transform;
+                        SelectorIndicator.active = true;
                         break;
                     case "Harry":
-                        print("Harry selected");
+                        SelectorIndicator.transform.parent = Harry.transform;
+                        SelectorIndicator.active = true;
                         break;
                     case "Tom":
-                        print("Tom selected");
+                        SelectorIndicator.transform.parent = Tom.transform;
+                        SelectorIndicator.active = true;
+                        break;
+                    default:
+                        SelectorIndicator.active = false;
                         break;
                 }
             }
